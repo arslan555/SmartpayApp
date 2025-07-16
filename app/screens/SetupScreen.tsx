@@ -37,7 +37,11 @@ const SetupScreen = () => {
   return (
     <View style={styles.container}>
       <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
-      <TopBar title={step === 'banks' ? 'Select Your Bank' : 'Select Your Cards'} backgroundColor="#f3f4f6" />
+      <TopBar
+        title={step === 'banks' ? 'Select Your Bank' : 'Select Your Cards'}
+        backgroundColor="#f3f4f6"
+        onBack={step === 'cards' ? () => setStep('banks') : undefined}
+      />
 
       {step === 'banks' ? (
         <BankSelector
@@ -51,7 +55,7 @@ const SetupScreen = () => {
           cards={filteredCards}
           selectedCards={selectedCards}
           onCardsSelected={setSelectedCards}
-          onBack={() => setStep('banks')}
+          // Remove onBack prop
           onSave={handleSaveCards}
         />
       )}

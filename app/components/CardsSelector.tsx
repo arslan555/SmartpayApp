@@ -21,7 +21,7 @@ interface CardSelectorProps {
   cards: CreditCard[];
   selectedCards: string[];
   onCardsSelected: (cardIds: string[]) => void;
-  onBack: () => void;
+  onBack?: () => void;
   onSave: () => void;
 }
 
@@ -108,7 +108,6 @@ export default function CardSelector({
         />
 
         <View style={styles.footer}>
-          <Button variant="outline" title="Back to Banks" onPress={onBack} />
           <Button
             title="Save My Cards"
             onPress={onSave}
@@ -195,12 +194,9 @@ const styles = StyleSheet.create({
     color: '#6B7280',
   },
   footer: {
-    position: 'absolute',
-    bottom: 36,
-    left: 0,
-    right: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 16,
+    marginTop: 20,
+    marginEnd: 16,
+    marginBottom: 16,
+    alignItems: 'flex-end',
   },
 });
