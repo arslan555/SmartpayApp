@@ -1,25 +1,31 @@
 // ✅ redux/slices/cardsSlice.ts
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CreditCard } from '../../types/CreditCard';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { creditCards } from '../../data/uaeBanks';
+import type { CreditCard } from '../../types/CreditCard';
+
+export const fetchCards = createAsyncThunk<CreditCard[]>(
+  'cards/fetchCards',
+  async () => {
+    // Simulate async fetch
+    return new Promise<CreditCard[]>((resolve) => {
+      setTimeout(() => {
+        resolve(creditCards);
+      }, 500);
+    });
+  }
+);
 
 interface CardsState {
   cards: CreditCard[];
-  loading: boolean;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
 
 const initialState: CardsState = {
   cards: [],
-  loading: false,
+  status: 'idle',
   error: null,
 };
-
-// Async thunk (mocked API simulation)
-export const fetchCreditCards = createAsyncThunk('cards/fetchAll', async () => {
-  await new Promise((res) => setTimeout(res, 500)); // simulate network delay
-  return creditCards; // would be replaced with real API in production
-});
 
 const cardsSlice = createSlice({
   name: 'cards',
@@ -27,17 +33,17 @@ const cardsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchCreditCards.pending, (state) => {
-        state.loading = true;
+      .addCase(fetchCards.pending, (state) => {
+        state.status = 'loading';
         state.error = null;
       })
-      .addCase(fetchCreditCards.fulfilled, (state, action: PayloadAction<CreditCard[]>) => {
-        state.loading = false;
+      .addCase(fetchCards.fulfilled, (state, action) => {
+        state.status = 'succeeded';
         state.cards = action.payload;
       })
-      .addCase(fetchCreditCards.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || 'Failed to load cards';
+      .addCase(fetchCards.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message || 'Failed to fetch cards';
       });
   },
 });

@@ -3,15 +3,16 @@ import { View, StyleSheet, StatusBar } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store';
 import { fetchBanks } from '../store/slices/banksSlice';
-import { fetchCreditCards } from '../store/slices/cardsSlice';
+import { fetchCards } from '../store/slices/cardsSlice';
 import BankSelector from '../components/BankSelector';
 import CardSelector from '../components/CardsSelector';
 import TopBar from '../components/TopBar';
+import type { CreditCard } from '../types/CreditCard';
 
-const HomeScreen = () => {
+const SetupScreen = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { banks, loading: loadingBanks } = useSelector((state: RootState) => state.banks);
-  const { cards, loading: loadingCards } = useSelector((state: RootState) => state.cards);
+  const { banks, status: banksStatus } = useSelector((state: RootState) => state.banks);
+  const { cards, status: cardsStatus } = useSelector((state: RootState) => state.cards);
 
   const [selectedBanks, setSelectedBanks] = useState<string[]>([]);
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
@@ -19,7 +20,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     dispatch(fetchBanks());
-    dispatch(fetchCreditCards());
+    dispatch(fetchCards());
   }, [dispatch]);
 
   const handleNextToCards = () => {
@@ -31,7 +32,7 @@ const HomeScreen = () => {
     // Navigate to next screen or store selection
   };
 
-  const filteredCards = cards.filter(card => selectedBanks.includes(card.bankId));
+  const filteredCards: CreditCard[] = cards.filter(card => selectedBanks.includes(card.bankId));
 
   return (
     <View style={styles.container}>
@@ -65,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default SetupScreen;
