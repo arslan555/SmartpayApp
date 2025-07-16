@@ -157,11 +157,13 @@ const styles = StyleSheet.create({
     color: '#111827',
   },
   stickyFooter: {
-    marginTop: 20,
-    marginEnd: 16,
-    marginBottom: 16,
+    position: 'absolute',
+    bottom: 36,
+    right: 0,
+    left: 0,
     alignItems: 'flex-end',
-
+    marginEnd: 16,
+    padding: 16,
   },
 });
 

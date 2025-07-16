@@ -75,7 +75,7 @@ const SetupScreen = () => {
     return (
       <ErrorScreen
         title="Select Your Bank"
-        message={`Failed to load banks: ${banksError}`}
+        message={banksError}
         onRetry={() => dispatch(fetchBanks())}
       />
     );
@@ -85,7 +85,7 @@ const SetupScreen = () => {
     return (
       <ErrorScreen
         title="Select Your Cards"
-        message={`Failed to load cards: ${cardsError}`}
+        message={cardsError}
         onRetry={() => dispatch(fetchCards())}
       />
     );
@@ -95,7 +95,7 @@ const SetupScreen = () => {
     return (
       <ErrorScreen
         title="Select Spending Categories"
-        message={`Failed to load categories: ${categoriesError}`}
+        message={categoriesError}
         onRetry={() => dispatch(fetchCategories())}
       />
     );
