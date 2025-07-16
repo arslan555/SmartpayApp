@@ -54,7 +54,12 @@ export default function CardSelector({
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.section}>
-          <Label>Search Cards</Label>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Label>Search Cards</Label>
+            <Pressable onPress={() => onCardsSelected([])} hitSlop={8}>
+              <Text style={{ fontSize: 13, color: '#2563EB', textDecorationLine: 'underline' }}>Reset</Text>
+            </Pressable>
+          </View>
           <TextInput
             placeholder="Type to search..."
             value={searchTerm}

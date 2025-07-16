@@ -53,7 +53,12 @@ export default function BankSelector({
       </View>
 
       <View style={styles.section}>
-        <Label>Select your banks</Label>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Label>Select your banks</Label>
+          <Pressable onPress={() => onBanksSelected([])} hitSlop={8}>
+            <Text style={{ fontSize: 13, color: '#2563EB', textDecorationLine: 'underline' }}>Reset</Text>
+          </Pressable>
+        </View>
         <FlatList
           data={filteredBanks}
           numColumns={2}
