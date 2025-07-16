@@ -6,6 +6,7 @@ import {
   FlatList,
   Pressable,
   StyleSheet,
+  Button as RNButton,
 } from 'react-native';
 import {
   Coffee,
@@ -20,6 +21,7 @@ import {
   Train,
   Monitor
 } from 'lucide-react-native';
+import Button from './ui/Button';
 
 export interface Category {
   id: string;
@@ -31,6 +33,7 @@ interface CategorySelectorProps {
   categories: Category[];
   selectedCategories: string[];
   onCategoriesSelected: (ids: string[]) => void;
+  onSave: () => void;
 }
 
 const getCategoryIcon = (icon: string, isSelected: boolean) => {
@@ -68,6 +71,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
   categories,
   selectedCategories,
   onCategoriesSelected,
+  onSave,
 }) => {
   const toggleCategory = (id: string) => {
     if (selectedCategories.includes(id)) {
@@ -78,29 +82,38 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
   };
 
   return (
-    <FlatList
-      data={categories}
-      numColumns={4}
-      keyExtractor={(item) => item.id}
-      columnWrapperStyle={styles.row}
-      contentContainerStyle={styles.container}
-      renderItem={({ item }) => {
-        const isSelected = selectedCategories.includes(item.id);
-        return (
-          <Pressable
-            style={[styles.card, isSelected && styles.cardSelected]}
-            onPress={() => toggleCategory(item.id)}
-          >
-            <View style={[styles.iconWrap, isSelected && styles.iconWrapSelected]}>
-              {getCategoryIcon(item.icon, isSelected)}
-            </View>
-            <Text style={styles.name} numberOfLines={2}>
-              {item.name}
-            </Text>
-          </Pressable>
-        );
-      }}
-    />
+    <View style={{ flex: 1 }}>
+      <FlatList
+        data={categories}
+        numColumns={4}
+        keyExtractor={(item) => item.id}
+        columnWrapperStyle={styles.row}
+        contentContainerStyle={styles.container}
+        renderItem={({ item }) => {
+          const isSelected = selectedCategories.includes(item.id);
+          return (
+            <Pressable
+              style={[styles.card, isSelected && styles.cardSelected]}
+              onPress={() => toggleCategory(item.id)}
+            >
+              <View style={[styles.iconWrap, isSelected && styles.iconWrapSelected]}>
+                {getCategoryIcon(item.icon, isSelected)}
+              </View>
+              <Text style={styles.name} numberOfLines={2}>
+                {item.name}
+              </Text>
+            </Pressable>
+          );
+        }}
+      />
+      <View style={styles.stickyFooter}>
+        <Button
+          title="Finish"
+          onPress={onSave}
+          disabled={selectedCategories.length === 0}
+        />
+      </View>
+    </View>
   );
 };
 
@@ -142,6 +155,15 @@ const styles = StyleSheet.create({
     fontSize: 13,
     textAlign: 'center',
     color: '#111827',
+  },
+  stickyFooter: {
+    position: 'absolute',
+    bottom: 36,
+    right: 0,
+    left: 0,
+    alignItems: 'flex-end',
+    marginEnd: 16,
+    padding: 16,
   },
 });
 

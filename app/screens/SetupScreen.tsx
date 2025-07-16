@@ -82,20 +82,12 @@ const SetupScreen = () => {
         />
       )}
       {step === 'categories' && (
-        <>
-          <CategoriesSelector
-            categories={categories}
-            selectedCategories={selectedCategories}
-            onCategoriesSelected={setSelectedCategories}
-          />
-          <View style={styles.footer}>
-            <Button
-              title="Continue"
-              onPress={handleFinishSetup}
-              disabled={selectedCategories.length === 0}
-            />
-          </View>
-        </>
+        <CategoriesSelector
+          categories={categories}
+          selectedCategories={selectedCategories}
+          onCategoriesSelected={setSelectedCategories}
+          onSave={handleFinishSetup}
+        />
       )}
     </View>
   );
