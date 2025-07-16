@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, StatusBar, Alert } from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store';
 import { fetchBanks } from '../store/slices/banksSlice';
@@ -10,6 +10,7 @@ import CardSelector from '../components/CardsSelector';
 import CategoriesSelector from '../components/CategoriesSelector';
 import TopBar from '../components/TopBar';
 import LoadingScreen from '../components/ui/LoadingScreen';
+import ErrorScreen from '../components/ui/ErrorScreen';
 import type { CreditCard } from '../types/CreditCard';
 
 const SetupScreen = () => {
@@ -39,34 +40,6 @@ const SetupScreen = () => {
     }
   }, [step, dispatch]);
 
-  // Handle errors
-  useEffect(() => {
-    if (banksError) {
-      Alert.alert('Error', `Failed to load banks: ${banksError}`, [
-        { text: 'Retry', onPress: () => dispatch(fetchBanks()) },
-        { text: 'OK' }
-      ]);
-    }
-  }, [banksError, dispatch]);
-
-  useEffect(() => {
-    if (cardsError) {
-      Alert.alert('Error', `Failed to load cards: ${cardsError}`, [
-        { text: 'Retry', onPress: () => dispatch(fetchCards()) },
-        { text: 'OK' }
-      ]);
-    }
-  }, [cardsError, dispatch]);
-
-  useEffect(() => {
-    if (categoriesError) {
-      Alert.alert('Error', `Failed to load categories: ${categoriesError}`, [
-        { text: 'Retry', onPress: () => dispatch(fetchCategories()) },
-        { text: 'OK' }
-      ]);
-    }
-  }, [categoriesError, dispatch]);
-
   const handleNextToCards = () => {
     setStep('cards');
   };
@@ -95,6 +68,37 @@ const SetupScreen = () => {
 
   if (step === 'categories' && categoriesStatus === 'loading') {
     return <LoadingScreen title="Select Spending Categories" message="Loading categories..." />;
+  }
+
+  // Show error state
+  if (step === 'banks' && banksStatus === 'failed' && banksError) {
+    return (
+      <ErrorScreen
+        title="Select Your Bank"
+        message={`Failed to load banks: ${banksError}`}
+        onRetry={() => dispatch(fetchBanks())}
+      />
+    );
+  }
+
+  if (step === 'cards' && cardsStatus === 'failed' && cardsError) {
+    return (
+      <ErrorScreen
+        title="Select Your Cards"
+        message={`Failed to load cards: ${cardsError}`}
+        onRetry={() => dispatch(fetchCards())}
+      />
+    );
+  }
+
+  if (step === 'categories' && categoriesStatus === 'failed' && categoriesError) {
+    return (
+      <ErrorScreen
+        title="Select Spending Categories"
+        message={`Failed to load categories: ${categoriesError}`}
+        onRetry={() => dispatch(fetchCategories())}
+      />
+    );
   }
 
   return (
