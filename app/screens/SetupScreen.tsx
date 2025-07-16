@@ -4,28 +4,41 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store';
 import { fetchBanks } from '../store/slices/banksSlice';
 import { fetchCards } from '../store/slices/cardsSlice';
+import { fetchCategories } from '../store/slices/categoriesSlice';
 import BankSelector from '../components/BankSelector';
 import CardSelector from '../components/CardsSelector';
 import CategoriesSelector from '../components/CategoriesSelector';
 import TopBar from '../components/TopBar';
-import Button from '../components/ui/Button';
-import { categories } from '../data/categories';
 import type { CreditCard } from '../types/CreditCard';
 
 const SetupScreen = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { banks, status: banksStatus } = useSelector((state: RootState) => state.banks);
   const { cards, status: cardsStatus } = useSelector((state: RootState) => state.cards);
+  const { categories, status: categoriesStatus } = useSelector((state: RootState) => state.categories);
 
   const [selectedBanks, setSelectedBanks] = useState<string[]>([]);
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [step, setStep] = useState<'banks' | 'cards' | 'categories'>('banks');
+  
 
   useEffect(() => {
     dispatch(fetchBanks());
-    dispatch(fetchCards());
+  
   }, [dispatch]);
+
+  useEffect(() => {
+    if (step === 'cards') {
+      dispatch(fetchCards());
+    }
+  }, [step, dispatch]);
+
+  useEffect(() => {
+    if (step === 'categories') {
+      dispatch(fetchCategories());
+    }
+  }, [step, dispatch]);
 
   const handleNextToCards = () => {
     setStep('cards');

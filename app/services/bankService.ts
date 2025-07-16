@@ -7,7 +7,7 @@ export const getBanks = async () => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(uaeBanks);
-    }, 500);
+    }, 1500);
   });
 };
 

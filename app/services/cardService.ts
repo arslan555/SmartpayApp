@@ -7,7 +7,7 @@ export const getCards = async () => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(mockCards);
-    }, 500);
+    }, 1500);
   });
 };
 
