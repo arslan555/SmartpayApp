@@ -8,13 +8,17 @@ import {
   StyleSheet,
 } from 'react-native';
 import {
-  CreditCard,
   Coffee,
-  ShoppingBag,
-  Plane,
   Store,
+  Plane,
   MapPin,
+  CreditCard,
   Fuel,
+  ShoppingBag,
+  Home,
+  Pill,
+  Train,
+  Monitor
 } from 'lucide-react-native';
 
 export interface Category {
@@ -25,26 +29,36 @@ export interface Category {
 
 interface CategorySelectorProps {
   categories: Category[];
-  selectedCategory: string;
-  onCategoryChange: (categoryId: string) => void;
+  selectedCategories: string[];
+  onCategoriesSelected: (ids: string[]) => void;
 }
 
 const getCategoryIcon = (icon: string, isSelected: boolean) => {
   const size = 24;
   const color = isSelected ? '#2563EB' : '#6B7280';
   switch (icon) {
-    case 'credit-card':
-      return <CreditCard size={size} color={color} />;
     case 'restaurant':
       return <Coffee size={size} color={color} />;
     case 'store':
       return <Store size={size} color={color} />;
     case 'travel':
       return <Plane size={size} color={color} />;
-    case 'map-pin':
-      return <MapPin size={size} color={color} />;
     case 'fuel':
       return <Fuel size={size} color={color} />;
+    case 'map-pin':
+      return <MapPin size={size} color={color} />;
+    case 'credit-card':
+      return <CreditCard size={size} color={color} />;
+    case 'home':
+      return <Home size={size} color={color} />;
+    case 'pharmacy':
+      return <Pill size={size} color={color} />;
+    case 'transit':
+      return <Train size={size} color={color} />;
+    case 'electronics':
+      return <Monitor size={size} color={color} />;
+    case 'shopping':
+      return <ShoppingBag size={size} color={color} />;
     default:
       return <ShoppingBag size={size} color={color} />;
   }
@@ -52,9 +66,17 @@ const getCategoryIcon = (icon: string, isSelected: boolean) => {
 
 const CategorySelector: React.FC<CategorySelectorProps> = ({
   categories,
-  selectedCategory,
-  onCategoryChange,
+  selectedCategories,
+  onCategoriesSelected,
 }) => {
+  const toggleCategory = (id: string) => {
+    if (selectedCategories.includes(id)) {
+      onCategoriesSelected(selectedCategories.filter((catId) => catId !== id));
+    } else {
+      onCategoriesSelected([...selectedCategories, id]);
+    }
+  };
+
   return (
     <FlatList
       data={categories}
@@ -63,11 +85,11 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
       columnWrapperStyle={styles.row}
       contentContainerStyle={styles.container}
       renderItem={({ item }) => {
-        const isSelected = selectedCategory === item.id;
+        const isSelected = selectedCategories.includes(item.id);
         return (
           <Pressable
             style={[styles.card, isSelected && styles.cardSelected]}
-            onPress={() => onCategoryChange(item.id)}
+            onPress={() => toggleCategory(item.id)}
           >
             <View style={[styles.iconWrap, isSelected && styles.iconWrapSelected]}>
               {getCategoryIcon(item.icon, isSelected)}

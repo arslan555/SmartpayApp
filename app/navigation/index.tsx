@@ -7,6 +7,7 @@ import DetailScreen from '../screens/DetailScreen';
 
 export type RootStackParamList = {
   Setup: undefined;
+  Categories: undefined;
   Detail: { title: string; description: string };
 };
 
