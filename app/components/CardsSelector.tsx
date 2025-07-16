@@ -114,7 +114,7 @@ export default function CardSelector({
 
         <View style={styles.footer}>
           <Button
-            title="Save My Cards"
+            title="Next: Select Categories"
             onPress={onSave}
             disabled={selectedCards.length === 0}
           />
