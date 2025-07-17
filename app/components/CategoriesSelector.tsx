@@ -83,6 +83,12 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
 
   return (
     <View style={{ flex: 1 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingHorizontal: 16, paddingTop: 16 }}>
+        <Pressable onPress={() => onCategoriesSelected([])} hitSlop={8}>
+          <Text style={{ fontSize: 13, color: '#2563EB', textDecorationLine: 'underline' }}>Reset</Text>
+        </Pressable>
+      </View>
+      
       <FlatList
         data={categories}
         numColumns={4}
